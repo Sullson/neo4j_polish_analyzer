@@ -56,7 +56,7 @@
         </configuration>
       </plugin> -->
 
-      <plugin>
+      <!-- <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.2.4</version>
@@ -72,7 +72,27 @@
             </configuration>
           </execution>
         </executions>
+      </plugin> -->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <!-- (Optional) If you want to relocate packages to avoid conflicts, you can add relocation rules here -->
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
+
+
     </plugins>
   </build>
 </project>
