@@ -1,2 +1,2 @@
-com/example/analyzer/CustomPolishMorfologikAnalyzer.class
-com/example/analyzer/PolishAnalyzerProvider.class
+com/example/neo4j/analyzer/PolishAnalyzerProvider.class
+com/example/neo4j/analyzer/CustomPolishMorfologikAnalyzer.class
