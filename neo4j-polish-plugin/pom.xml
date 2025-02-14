@@ -1,103 +1,83 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="
-             http://maven.apache.org/POM/4.0.0
-             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.example.neo4j.polish</groupId>
-  <artifactId>neo4j-polish-plugin</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <groupId>com.example</groupId>
+  <artifactId>neo4j-polish-analyzer</artifactId>
+  <version>1.0</version>
+  <name>Neo4j Polish Morfologik Analyzer Plugin</name>
 
   <properties>
-    <neo4j.version>5.25.1</neo4j.version>
-    <lucene.version>8.11.4</lucene.version>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- Adjust Java version as needed -->
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
   </properties>
 
   <dependencies>
-    <!-- Neo4j dependency -->
+    <!-- Neo4j Kernel (Community 5.25.1) for AnalyzerProvider etc. -->
     <dependency>
       <groupId>org.neo4j</groupId>
-      <artifactId>neo4j</artifactId>
-      <version>${neo4j.version}</version>
+      <artifactId>neo4j-kernel</artifactId>
+      <version>5.25.1</version>
       <scope>provided</scope>
     </dependency>
 
-    <!-- Lucene Core -->
+    <!-- Lucene analyzers (must match the version Neo4j 5.25.1 uses, typically 8.11.x) -->
     <dependency>
       <groupId>org.apache.lucene</groupId>
       <artifactId>lucene-core</artifactId>
-      <version>${lucene.version}</version>
+      <version>8.11.0</version>
     </dependency>
-
-    <!-- Lucene Stempel Analyzer (if you need it) -->
-    <dependency>
-      <groupId>org.apache.lucene</groupId>
-      <artifactId>lucene-analyzers-stempel</artifactId>
-      <version>${lucene.version}</version>
-    </dependency>
-
-    <!-- Lucene Common Analyzers (includes PolishAnalyzer) -->
     <dependency>
       <groupId>org.apache.lucene</groupId>
       <artifactId>lucene-analyzers-common</artifactId>
-      <version>${lucene.version}</version>
+      <version>8.11.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-analyzers-morfologik</artifactId>
+      <version>8.11.0</version>
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
 
-      <!-- Recommended: Maven Shade Plugin to produce a single, merged JAR -->
+      <!-- Compile Java code -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>11</source>
+          <target>11</target>
+        </configuration>
+      </plugin>
+
+      <!-- (Optional) Shade plugin if you want a single JAR with dependencies inside.
+           Usually you can just drop your plugin JAR + the lucene-analyzers JARs 
+           into Neo4j's plugins/ folder without shading. 
+           If you prefer shading, uncomment below:
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.3.0</version>
-        <configuration>
-          <finalName>neo4j-polish-plugin</finalName>
-          <transformers>
-            <!-- Merges any META-INF/services files so Neo4j can discover custom analyzers -->
-            <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-          </transformers>
-        </configuration>
+        <version>3.2.4</version>
         <executions>
           <execution>
-            <id>shade</id>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <!-- Optionally: comment out or remove the Assembly Plugin if you no longer need it. -->
-      <!--
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-          <finalName>neo4j-polish-plugin</finalName>
-        </configuration>
-        <executions>
-          <execution>
-            <id>make-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
+            <configuration>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+            </configuration>
           </execution>
         </executions>
       </plugin>
       -->
-
     </plugins>
   </build>
 </project>
