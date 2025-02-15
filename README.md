@@ -5,7 +5,8 @@
     In your `$NEO4J_HOME/plugins` folder, place:
     
     - Your plugin JAR (`neo4j-polish-analyzer-1.0.jar`)
-    - The extra dependency: `lucene-analyzers-morfologik-8.11.0.jar`(You can download this from the [Maven repository](https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-morfologik/8.11.0/)).
+    - Extra dependencies from target/lib: `lucene-analyzers-morfologik-8.11.0.jar`, `morfologik-stemming-2.1.5.jar`, `morfologik-polish-2.1.5.jar`, `morfologik-fsa-2.1.5.jar`.
+
 2. **Restart Neo4j:**
     
     Restart the database. Now, Neo4j should load its built-in Lucene libraries plus your extra jar and your plugin.
