@@ -8,7 +8,7 @@ import org.neo4j.graphdb.schema.AnalyzerProvider;
 public class PolishAnalyzerProvider extends AnalyzerProvider {
 
     public PolishAnalyzerProvider() {
-        // "polish-custom" is the name you'll use in your Cypher index configuration.
+        // This is the identifier you'll use when configuring your full-text index.
         super("polish-custom");
     }
 
