@@ -24,6 +24,13 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- Morfologik requirements -->
+    <dependency>
+        <groupId>org.carrot2</groupId>
+        <artifactId>morfologik-stemming</artifactId>
+        <version>2.1.5</version>
+    </dependency>
+
     <!-- Lucene analyzers (must match the version Neo4j 5.25.1 uses, typically 8.11.x) -->
     <dependency>
       <groupId>org.apache.lucene</groupId>
@@ -56,28 +63,25 @@
         </configuration>
       </plugin>
 
-      <!-- (Optional) Shade plugin if you want a single JAR with dependencies inside.
-           Usually you can just drop your plugin JAR + the lucene-analyzers JARs 
-           into Neo4j's plugins/ folder without shading. 
-           If you prefer shading, uncomment below:
+<!-- Maven Dependency Plugin for copying dependencies -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.4</version>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.5.0</version>
         <executions>
           <execution>
+            <id>copy-dependencies</id>
             <phase>package</phase>
             <goals>
-              <goal>shade</goal>
+              <goal>copy-dependencies</goal>
             </goals>
             <configuration>
-              <createDependencyReducedPom>false</createDependencyReducedPom>
-              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+              <includeScope>runtime</includeScope>
             </configuration>
           </execution>
         </executions>
       </plugin>
-      -->
     </plugins>
   </build>
 </project>
