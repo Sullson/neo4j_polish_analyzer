@@ -68,7 +68,11 @@ You should see `"polish-custom"` in the list.
 
 ```sql
 CREATE FULLTEXT INDEX idx_polish FOR (n:YourLabel) ON (n.yourProperty)
-OPTIONS { analyzer: 'polish-custom' };
+OPTIONS { 
+  indexConfig: { 
+    `fulltext.analyzer`: 'polish-custom'
+  } 
+}
 ```
 
 ---
